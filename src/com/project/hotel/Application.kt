@@ -1,5 +1,13 @@
 package com.project.hotel
 
+import com.project.hotel.data.DatabaseFactory
+import com.project.hotel.data.dbQuery
+import com.project.hotel.data.entity.T1Entity
+import com.project.hotel.data.entity.asT1
+import com.project.hotel.data.entity.asT1Entity
+import com.project.hotel.data.tables.T1Table
+import com.project.hotel.data.tables.T1Table.login
+import com.project.hotel.domain.model.asString
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.request.*
@@ -10,12 +18,21 @@ import kotlinx.html.*
 import io.ktor.features.*
 import io.ktor.server.engine.*
 import io.ktor.auth.*
+import io.ktor.util.*
+import kotlinx.coroutines.launch
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
+@KtorExperimentalAPI
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
+
+    DatabaseFactory.init()
+
+
     install(CORS) {
         method(HttpMethod.Options)
         method(HttpMethod.Put)
@@ -66,6 +83,25 @@ fun Application.module(testing: Boolean = false) {
             }
         }
 
+        get("/t1-list") {
+            val t1List = dbQuery {
+                T1Table.selectAll()
+                    .mapNotNull { it.asT1Entity().asT1()
+                    }
+
+            }
+            call.respondText(t1List.asString())
+        }
+
+        get("/add-t1") {
+            val login1 = call.parameters["login"] ?: throw Exception("null param")
+            dbQuery {
+                T1Table.insert {
+                    it[login] = login1
+                } get T1Table.id
+            }
+        }
+
         authenticate("myBasicAuth") {
             get("/protected/route/basic") {
                 val principal = call.principal<UserIdPrincipal>()!!
@@ -74,4 +110,5 @@ fun Application.module(testing: Boolean = false) {
         }
     }
 }
+
 
