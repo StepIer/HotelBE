@@ -1,4 +1,4 @@
-package com.project.
+package com.project.hotel
 
 import io.ktor.application.*
 import io.ktor.response.*
