@@ -1,4 +1,4 @@
-package com.project.hotel.infrastructure
+package com.project.hotel.infrastructure.config
 
 import com.project.hotel.data.dbQuery
 import com.project.hotel.data.entity.asT1
@@ -6,6 +6,7 @@ import com.project.hotel.data.entity.asT1Entity
 import com.project.hotel.data.tables.T1Table
 import com.project.hotel.data.tables.UsersTable
 import com.project.hotel.domain.model.asString
+import com.project.hotel.infrastructure.config.routing.userRoutings
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.html.*
@@ -22,6 +23,7 @@ import org.jetbrains.exposed.sql.selectAll
 fun Application.allRouting() {
 
     routing {
+        userRoutings()
         get("/") {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
         }
@@ -74,15 +76,7 @@ fun Application.allRouting() {
         val password_hash: String = " "
 
         }       */
-        get("/add-Users") {
-            val name1 = call.parameters["name"] ?: throw Exception("null param Users")
-            dbQuery {
-                UsersTable.insert {
-                    it[name] = name1
 
-                }
-            }
-        }
     }
 
 }

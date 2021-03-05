@@ -4,4 +4,5 @@ import com.project.hotel.domain.model.User
 
 interface UserRepository {
     suspend fun addUser(user: User)
+
 }

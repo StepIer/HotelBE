@@ -23,7 +23,7 @@ data class User(
     @SerialName("id") val id: Int = 0,
     @SerialName("name") val name: String = " ",
     @SerialName("surname") val surname: String = " ",
-    @SerialName("token") val token: String? = null,
+    @SerialName("token") var token: String? = null,
     @SerialName("password_hash") val password_hash: String = " "
 )
 

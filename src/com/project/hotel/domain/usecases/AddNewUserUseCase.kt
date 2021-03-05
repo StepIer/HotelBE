@@ -9,5 +9,4 @@ class AddNewUserUseCase(
     suspend fun addUser(user: User) {
         userRepository.addUser(user)
     }
-
 }
