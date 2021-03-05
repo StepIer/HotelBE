@@ -1,5 +1,6 @@
 package com.project.hotel
 
+import com.project.hotel.infrastructure.module
 import io.ktor.http.*
 import kotlin.test.*
 import io.ktor.server.testing.*
