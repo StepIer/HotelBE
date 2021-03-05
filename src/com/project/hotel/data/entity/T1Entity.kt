@@ -11,6 +11,7 @@ data class T1Entity(
     val login: String = "",
 )
 
+
 fun T1Entity.asT1() = T1(id, login)
 fun T1.asT1Entity() = T1Entity(id, login)
 
