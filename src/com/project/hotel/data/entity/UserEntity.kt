@@ -26,7 +26,7 @@ data class UserEntity (
     val password_hash: String = " "
 )
 
-fun UserEntity.asUsers() = User(id, name, surname, token, password_hash)
+fun UserEntity.asUser() = User(id, name, surname, token, password_hash)
 fun User.asUsersEntity() = UserEntity(id, name, surname, token, password_hash)
 
 fun ResultRow.asUserEntyti() = UserEntity(
@@ -36,7 +36,7 @@ fun ResultRow.asUserEntyti() = UserEntity(
     token = get(UsersTable.token),
     password_hash = get(UsersTable.password_hash)
 )
-fun ResultRow.asUsers() = asUserEntyti().asUsers()
+fun ResultRow.asUser() = asUserEntyti().asUser()
 /*
 fun T1Entity.asT1() = T1(id, login)
 fun T1.asT1Entity() = T1Entity(id, login)

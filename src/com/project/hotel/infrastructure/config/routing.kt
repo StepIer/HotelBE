@@ -60,7 +60,7 @@ fun Application.allRouting() {
             }
         }
 
-        authenticate("myBasicAuth") {
+        authenticate {
             get("/protected/route/basic") {
                 val principal = call.principal<UserIdPrincipal>()!!
                 call.respondText("Hello ${principal.name}")

@@ -1,6 +1,9 @@
 package com.project.hotel.infrastructure.config
 
 import com.auth0.jwt.exceptions.TokenExpiredException
+import com.project.hotel.domain.model.User
+import com.project.hotel.domain.usecases.LoginUseCase
+import com.project.hotel.domain.usecases.SignUpUseCase
 import com.project.hotel.infrastructure.model.Credentials
 import com.project.hotel.infrastructure.model.SimpleJWT
 import io.ktor.application.*
@@ -10,7 +13,6 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import org.koin.ktor.ext.get
-import sun.security.util.KeyUtil.validate
 import java.time.Instant
 import java.util.*
 
@@ -27,14 +29,14 @@ fun Application.authentication() {
     }
     routing {
 
-//        val signInUseCase: SignInUseCase = get()
-//        val signUpUseCase: SignUpUseCase = get()
+        val loginUseCase: LoginUseCase = get()
+        val signUpUseCase: SignUpUseCase = get()
 //        val signOutUseCase: SignOutUseCase = get()
 //        val getUserByEmailUseCase: GetUserByEmailUseCase = get()
 
-        post("/auth/login") {
+        post("auth/login") {
             val post = call.receive<Credentials>()
-            val token = signInUseCase.signIn(
+            val token = loginUseCase.login(
                 post.name,
                 post.password,
                 tokenChecker = {
@@ -50,20 +52,14 @@ fun Application.authentication() {
             call.respond(mapOf("token" to token))
         }
 
-        route(Routes.AUTH_SIGN_UP) {
+        post("auth/sign-up") {
             val post = call.receive<Credentials>()
-            val userWithEmailAndPassword = User(email = post.email, passwordHash = post.password)
-            val resultUser = signUpUseCase.signUp(userWithEmailAndPassword) {
-                simpleJwt.sign(userWithEmailAndPassword.email)
+            val userWithNameAndPassword = User(name = post.name, password_hash = post.password)
+            val resultToken = signUpUseCase.signUp(userWithNameAndPassword) {
+                simpleJWT.sign(it.name)
             }
-            call.respond(mapOf("token" to resultUser.token))
+            call.respond(mapOf("token" to resultToken))
         }
 
-        route(Routes.AUTH_SIGN_OUT) {
-            val currentUser = call.getUserIdPrincipal()?.name?.let { email -> getUserByEmailUseCase.getUser(email) }
-                ?: throw AuthException.InvalidToken()
-            val newToken = signOutUseCase.signOut(currentUser.email) { simpleJwt.sign(currentUser.email) }
-            call.respond(mapOf("token" to newToken))
-        }
     }
 }

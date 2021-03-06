@@ -33,15 +33,9 @@ fun Application.defaultConfig(){
     }
 
     //
-    install(Authentication) {
-        basic("myBasicAuth") {
-            realm = "Ktor Server"
-            validate { if (it.name == "test" && it.password == "password") UserIdPrincipal(it.name) else null }
-        }
-    }
 
 
-    install(ContentNegotiation) {
-    }
+
+
 }
 

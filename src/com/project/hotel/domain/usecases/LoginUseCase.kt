@@ -5,7 +5,7 @@ import com.project.hotel.domain.usersrepository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class LoginUseCase(val userRepository: UserRepository) {
+class LoginUseCase(private val userRepository: UserRepository) {
     suspend fun login(
         name: String,
         password: String,
