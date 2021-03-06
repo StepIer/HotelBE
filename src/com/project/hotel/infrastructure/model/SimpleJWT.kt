@@ -11,8 +11,8 @@ class SimpleJWT(secret: String) {
 
     val verifier: JWTVerifier = JWT.require(algorithm).build()
 
-    fun sign(email: String): String = JWT.create()
-        .withClaim("name", email)
+    fun sign(name: String): String = JWT.create()
+        .withClaim("name", name)
         .withExpiresAt(getExpiration())
         .sign(algorithm)
 
