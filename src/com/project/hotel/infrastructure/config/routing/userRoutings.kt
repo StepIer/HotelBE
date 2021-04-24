@@ -16,5 +16,6 @@ fun Routing.userRoutings() {
         val surname = call.requireParameter("surname")
         val password_hash = call.requireParameter("password_hash")
         addNewUserUseCase.addUser(User(0, name, surname, password_hash))
+        //dfvgbh
     }
 }
