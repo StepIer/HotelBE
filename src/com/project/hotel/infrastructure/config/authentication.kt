@@ -13,6 +13,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import org.koin.ktor.ext.get
+
 import java.time.Instant
 import java.util.*
 
@@ -52,7 +53,7 @@ fun Application.authentication() {
             call.respond(mapOf("token" to token))
         }
 
-        post("auth/sign-up") {
+        post("/auth/sign-up") {
             val post = call.receive<Credentials>()
             val userWithNameAndPassword = User(name = post.name, password_hash = post.password)
             val resultToken = signUpUseCase.signUp(userWithNameAndPassword) {
